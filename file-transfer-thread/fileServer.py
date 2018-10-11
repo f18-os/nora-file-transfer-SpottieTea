@@ -25,6 +25,12 @@ lsock.bind(bindAddr)
 lsock.listen(5)
 print("listening on:", bindAddr)
 
+class ServerThread(Thread):
+    def __init__(self, sock, debug):
+        Thread.__init__(self, daemon=True)
+        #self.fsock, self.debug = FramedStreamSock(sock, debug), debug #study this line
+        self.start()
+
 
 while True:
     
