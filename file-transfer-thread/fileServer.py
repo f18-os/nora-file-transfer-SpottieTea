@@ -25,11 +25,11 @@ lsock.bind(bindAddr)
 lsock.listen(5)
 print("listening on:", bindAddr)
 
-class ServerThread(Thread):
-    def __init__(self, sock, debug):
-        Thread.__init__(self, daemon=True)
+#class ServerThread(Thread):
+ #   def __init__(self, sock, debug):
+  #      Thread.__init__(self, daemon=True)
         #self.fsock, self.debug = FramedStreamSock(sock, debug), debug #study this line
-        self.start()
+   #     self.start()
 
 
 while True:
@@ -50,7 +50,7 @@ while True:
         
         while line:
             serverFile.write(line.decode('ascii'))
-            if line = "/end":
+            if line == "/end":
                 break
             line = framedReceive(sock,debug)
                 
