@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
-import sys, os, socket, params, time
-from threading import Thread
-from framedSock import FramedStreamSock
+import sys, os, socket, params
 
 switchesVarDefaults = (
     (('-l', '--listenPort') ,'listenPort', 50001),
@@ -23,25 +21,18 @@ lsock.bind(bindAddr)
 lsock.listen(5)
 print("listening on:", bindAddr)
 
-class ServerThread(Thread):
-    requestCount = 0            # one instance / class
-    def __init__(self, sock, debug):
-        Thread.__init__(self, daemon=True)
-        self.fsock, self.debug = FramedStreamSock(sock, debug), debug
-        self.start()
-    def run(self):
-        while True:
-            msg = self.fsock.receivemsg()
-            if not msg:
-                if self.debug: print(self.fsock, "server thread done")
-                return
-            requestNum = ServerThread.requestCount
-            time.sleep(0.001)
-            ServerThread.requestCount = requestNum + 1
-            msg = ("%s! (%d)" % (msg, requestNum)).encode()
-            self.fsock.sendmsg(msg)
-
-
 while True:
+    from framedSock import FramedStreamSock
     sock, addr = lsock.accept()
-    ServerThread(sock, debug)
+    fsock = FramedStreamSock(sock, debug)
+
+    if not os.fork():
+        print("new child process handling connection from", addr)
+        while True:
+            payload = fsock.receivemsg()
+            if debug: print("rec'd: ", payload)
+            if not payload:
+                if debug: print("child exiting")
+                sys.exit(0)
+            payload += b"!"             # make emphatic!
+            fsock.sendmsg(payload)
