@@ -63,12 +63,15 @@ class ClientThread(Thread):
        fs = FramedStreamSock(s, debug=debug)
 
 
-       print("sending hello world")
-       fs.sendmsg(b"hello world")
-       print("received:", fs.receivemsg())
+       filename = input("Enter the name of the file you want to send: \n")
+       theFile = open(filename,'rb')
+       
+       for l in theFile:
+           fs.sendmsg(l)
+           print("received:", fs.receivemsg())
 
-       fs.sendmsg(b"hello world")
-       print("received:", fs.receivemsg())
+           #fs.sendmsg(b"hello world")
+           #print("received:", fs.receivemsg())
 
 for i in range(100):
     ClientThread(serverHost, serverPort, debug)
