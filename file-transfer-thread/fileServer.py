@@ -50,5 +50,8 @@ while True:
         
         while line:
             serverFile.write(line.decode('ascii'))
+            if line = "/end":
+                break
             line = framedReceive(sock,debug)
+                
         print("File recieved!")

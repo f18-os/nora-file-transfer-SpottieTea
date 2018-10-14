@@ -70,3 +70,5 @@ fileopen = open(nameFile,'rb')
 
 for l in fileopen:
     framedSend(s,l,debug)
+    
+framedSend(s,"/end",debug)
