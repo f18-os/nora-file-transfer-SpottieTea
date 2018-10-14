@@ -49,9 +49,13 @@ while True:
         print("Writing to file... \n")
         
         while line:
-            serverFile.write(line.decode('ascii'))
-            if line == "/end":
+            line = line.decode('ascii')
+            
+            if line == '/end':
+                print("End of file!")
+                sock.close()
                 break
+            serverFile.write(line)
             line = framedReceive(sock,debug)
                 
         print("File recieved!")
