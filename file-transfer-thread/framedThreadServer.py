@@ -30,9 +30,15 @@ class ServerThread(Thread):
         self.fsock, self.debug = FramedStreamSock(sock, debug), debug
         self.start()
     def run(self):
+        msg = self.fsock.receivemsg()
+        msg = msg.decode('ascii')
+        fileopen = open("serverFiles/"+msg,'w')
+        
         while True:
             msg = self.fsock.receivemsg()
+            msg = msg.decode('ascii')
             print("Recieved: ",msg)
+            fileopen.write(msg)
             if not msg:
                 if self.debug: print(self.fsock, "server thread done")
                 return
