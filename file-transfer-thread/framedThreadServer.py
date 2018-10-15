@@ -40,14 +40,13 @@ class ServerThread(Thread):
             print("Recieved: ",msg)
             fileopen.write(msg)
             if not msg:
-                if self.debug: print(self.fsock, "server thread done")
+                if self.debug:
+                    print(self.fsock, "server thread done")
                 return
             requestNum = ServerThread.requestCount
             time.sleep(0.001)
             ServerThread.requestCount = requestNum + 1
             msg = ("%s! (%d)" % (msg, requestNum)).encode()
-            self.fsock.sendmsg(msg)
-
 
 while True:
     sock, addr = lsock.accept()
