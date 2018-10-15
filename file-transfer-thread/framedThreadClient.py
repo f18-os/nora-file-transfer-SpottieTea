@@ -69,7 +69,7 @@ class ClientThread(Thread):
        
        for l in theFile:
            fs.sendmsg(l)
-           print("received:", fs.receivemsg())
+           #print("received:", fs.receivemsg())
 
           # fs.sendmsg(b"hello world")
            #print("received:", fs.receivemsg())
